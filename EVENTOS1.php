@@ -254,8 +254,7 @@ if (!empty($NOMBRE_VENDEDOR)) {
     } elseif ($nombreVendedorSeleccionado !== '' && $nombreVendedorSeleccionado === $nombreCompleto) {
         $select = 'selected';
     }
-} elseif ($_SESSION['idem'] == $row['idRelacion']) {
-    $select = 'selected';
+
 }
 
 $option2 .= '<option style="background: #'.$fondos[$num].'" '.$select.' 
@@ -309,8 +308,7 @@ if (!empty($NOMBRE_EJECUTIVOEVENTO)) {
     } elseif ($nombreEjecutivoSeleccionado !== '' && $nombreEjecutivoSeleccionado === $nombreCompleto) {
         $select = 'selected';
     }
-} elseif ($_SESSION['idem'] == $row['idRelacion']) {
-    $select = 'selected';
+
 }
 
 $option2 .= '<option style="background: #'.$fondos[$num].'" '.$select.' 
@@ -372,8 +370,6 @@ if (!empty($NOMBRE_AUDITOR)) {
     } elseif ($nombreAUDITORSeleccionado !== '' && $nombreAUDITORSeleccionado === $nombreCompleto) {
         $select = 'selected';
     }
-} elseif ($_SESSION['idem'] == $row['idRelacion']) {
-    $select = 'selected';
 }
 
 $option21 .= '<option style="background: #'.$fondos[$num].'" '.$select.' 
