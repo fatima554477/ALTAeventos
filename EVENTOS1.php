@@ -82,7 +82,45 @@ function calcular() {
 
 
 document.addEventListener("DOMContentLoaded", calcular);
+function setFormularioBloqueado(bloqueado) {
+    const form = document.getElementById("ALTAEVENTOSform");
+    if (!form) {
+        return;
+    }
 
+    const controles = form.querySelectorAll("input, select, textarea");
+
+    controles.forEach(control => {
+        if (control.type === "hidden") {
+            return;
+        }
+
+        if (control.dataset.originalDisabled === undefined) {
+            control.dataset.originalDisabled = control.disabled ? "true" : "false";
+        }
+
+        if (bloqueado) {
+            control.disabled = true;
+            return;
+        }
+
+        if (control.dataset.originalDisabled !== "true") {
+            control.disabled = false;
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    calcular();
+    setFormularioBloqueado(true);
+
+    const botonModificar = document.getElementById("MODIFICAR_EVENTOS");
+    if (botonModificar) {
+        botonModificar.addEventListener("click", function () {
+            setFormularioBloqueado(false);
+        });
+    }
+});
 
 $("#tot").on({
     "focus": function (event) {
@@ -127,7 +165,7 @@ $("#tot").on({
 <div id="content">     
 			<hr/>
 		<strong>	  <p class="mb-0 text-uppercase" ><img src="includes/contraer31.png" id="mostrar1" style="cursor:pointer;"/>
-<img src="includes/contraer41.png" id="ocultar1" style="cursor:pointer;"/>&nbsp;&nbsp;&nbsp; ALTA DE EVENTOS (SIN NÚMERO DE EVENTO)</p></strong></div>
+<img src="includes/contraer41.png" id="ocultar1" style="cursor:pointer;"/>&nbsp;&nbsp;&nbsp; ALTA DE EVENTOS </p></strong></div>
 
 
 <div  id="mensajeALTAEVENTOS2">
@@ -206,37 +244,55 @@ echo $encabezadoA.$option2.'</select>';
     </tr>
 	
                   
-                 <tr style="background:#fcf3cf">
-    <th style="text-align:left" scope="col">NOMBRE DEL RESPONSABLE DEL EVENTO:<br><a style="color:red;font-size:11px">OBLIGATORIO</a></th>
-       <td>
+<tr style="background:#fcf3cf">
+    <th style="text-align:left" scope="col">
+        NOMBRE DEL RESPONSABLE DEL EVENTO:<br>
+        <a style="color:red;font-size:11px">OBLIGATORIO</a>
+    </th>
+    <td>
 <?php
-$encabezadoA = '';
 $queryper = $conexion->colaborador_generico_bueno();
-$encabezadoA = '<select class="form-select mb-3" aria-label="Default select example" id="NOMBRE_EJECUTIVOEVENTO" required="" name="NOMBRE_EJECUTIVOEVENTO"  placeholder="SELECIONA UNA OPCIÓN">
-<option> SELECIONA UNA OPCIÓN</option>';
 
+$encabezadoA = '
+<select class="form-select mb-3"
+        id="NOMBRE_EJECUTIVOEVENTO"
+        name="NOMBRE_EJECUTIVOEVENTO"
+        required>
+    <option value="" disabled>SELECCIONA UNA OPCIÓN</option>';
 
-$fondos = array("fff0df","f4ffdf","dfffed","dffeff","dfe8ff","efdfff","ffdffd","efdfff","ffdfe9");
+$fondos = ["fff0df","f4ffdf","dfffed","dffeff","dfe8ff","efdfff","ffdffd","efdfff","ffdfe9"];
 $num = 0;
+$option99 = '';
 
-while($row = mysqli_fetch_array($queryper))
-{
+while ($row = mysqli_fetch_array($queryper)) {
 
-if($num==8){$num=0;}else{$num++;}
+    if ($num == 8) { $num = 0; } else { $num++; }
 
-$select='';
-if($_SESSION['idem']==$row['idRelacion']){
-$select='selected';
+    $select = '';
+    if (!empty($NOMBRE_EJECUTIVOEVENTO) && $NOMBRE_EJECUTIVOEVENTO == $row['aliasid']) {
+        $select = 'selected';
+    }
+
+    $nombreCompleto = trim(
+        $row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.
+        $row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO']
+    );
+
+    $option99 .= '
+    <option style="background:#'.$fondos[$num].'"
+            '.$select.'
+            value="'.$row['aliasid'].'^^^'.$nombreCompleto.'">
+        '.$nombreCompleto.'
+    </option>';
 }
 
-$option99 .= '<option style="background: #'.$fondos[$num].'" '.$select.' 
-value="'.$row['aliasid'].'^^^'.$row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO'].'">'.$row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO'].
-'</option>';
-}
-echo $encabezadoA.$option99.'</select>';		
-?></td>
+echo $encabezadoA . $option99 . '</select>';
 
-    </tr>
+?>
+    </td>
+</tr>
+
+
 
  <tr  style="background: #efdcf0"> 
 
@@ -908,7 +964,8 @@ echo "<a target='_blank' href='includes/archivos/".$row2['IMAGEN_EVENTO']."' id=
 
 
                                     
-    <input type="hidden" value="hALTAEVENTOS" name="hALTAEVENTOS">     
+     <input type="hidden" value="hALTAEVENTOS" name="hALTAEVENTOS">     
+    <input type="hidden" value="<?php echo $IPaltaeventos; ?>" name="IPaltaeventos" id="IPaltaeventos">     
  
    <td>
            
