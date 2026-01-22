@@ -169,7 +169,7 @@ $variablequery = mysqli_query($conn,$variable);
 		}
 		}
 		else{
-			return "2";
+			return " ";
 		}
 	}
 
@@ -240,8 +240,7 @@ $variablequery = mysqli_query($conn,$variable);
 		$FEE_COBRADO  = str_replace(',','',$FEE_COBRADO);
 		$MONTOC_TOTAL_EVENTO  = str_replace(',','',$MONTOC_TOTAL_EVENTO);		
 		$TOTAL_AVION_SINIVA  = str_replace(',','',$TOTAL_AVION_SINIVA);
-
-	
+		
 		$conn = $this->db();
 		$existe = $this->revisar_altaeventos();
 		$session = isset($_SESSION['id'])?$_SESSION['id']:'';                               

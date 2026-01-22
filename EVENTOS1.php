@@ -223,9 +223,22 @@ $encabezadoA = '<select class="form-select mb-3" aria-label="Default select exam
 
 $fondos = array("fff0df","f4ffdf","dfffed","dffeff","dfe8ff","efdfff","ffdffd","efdfff","ffdfe9");
 $num = 0;
+$nombreVendedorSeleccionado = '';
+$aliasVendedorSeleccionado = '';
+if (!empty($NOMBRE_VENDEDOR)) {
+    if (strpos($NOMBRE_VENDEDOR, '^^^') !== false) {
+        list($aliasVendedorSeleccionado, $nombreVendedorSeleccionado) = explode('^^^', $NOMBRE_VENDEDOR, 2);
+    } else {
+        $nombreVendedorSeleccionado = $NOMBRE_VENDEDOR;
+    }
+    $nombreVendedorSeleccionado = trim($nombreVendedorSeleccionado);
+    $aliasVendedorSeleccionado = trim($aliasVendedorSeleccionado);
+}
 
 while($row = mysqli_fetch_array($queryper))
 {
+
+
 
 if($num==8){$num=0;}else{$num++;}
 
@@ -236,8 +249,9 @@ $valorOption = $row['aliasid'].'^^^'.$nombreCompleto;
 
 $select = '';
 if (!empty($NOMBRE_VENDEDOR)) {
-    $prefijoVendedor = $row['aliasid'].'^^^';
-    if ($NOMBRE_VENDEDOR === $valorOption || strpos($NOMBRE_VENDEDOR, $prefijoVendedor) === 0) {
+    if ($aliasVendedorSeleccionado !== '' && $aliasVendedorSeleccionado === $row['aliasid']) {
+        $select = 'selected';
+    } elseif ($nombreVendedorSeleccionado !== '' && $nombreVendedorSeleccionado === $nombreCompleto) {
         $select = 'selected';
     }
 } elseif ($_SESSION['idem'] == $row['idRelacion']) {
@@ -266,6 +280,17 @@ $encabezadoA = '<select class="form-select mb-3" aria-label="Default select exam
 
 $fondos = array("fff0df","f4ffdf","dfffed","dffeff","dfe8ff","efdfff","ffdffd","efdfff","ffdfe9");
 $num = 0;
+$nombreEjecutivoSeleccionado = '';
+$aliasEjecutivoSeleccionado = '';
+if (!empty($NOMBRE_EJECUTIVOEVENTO)) {
+    if (strpos($NOMBRE_EJECUTIVOEVENTO, '^^^') !== false) {
+        list($aliasEjecutivoSeleccionado, $nombreEjecutivoSeleccionado) = explode('^^^', $NOMBRE_EJECUTIVOEVENTO, 2);
+    } else {
+        $nombreEjecutivoSeleccionado = $NOMBRE_EJECUTIVOEVENTO;
+    }
+    $nombreEjecutivoSeleccionado = trim($nombreEjecutivoSeleccionado);
+    $aliasEjecutivoSeleccionado = trim($aliasEjecutivoSeleccionado);
+}
 
 while($row = mysqli_fetch_array($queryper))
 {
@@ -279,8 +304,9 @@ $valorOption = $row['aliasid'].'^^^'.$nombreCompleto;
 
 $select = '';
 if (!empty($NOMBRE_EJECUTIVOEVENTO)) {
-    $prefijoVendedor = $row['aliasid'].'^^^';
-    if ($NOMBRE_EJECUTIVOEVENTO === $valorOption || strpos($NOMBRE_EJECUTIVOEVENTO, $prefijoVendedor) === 0) {
+    if ($aliasEjecutivoSeleccionado !== '' && $aliasEjecutivoSeleccionado === $row['aliasid']) {
+        $select = 'selected';
+    } elseif ($nombreEjecutivoSeleccionado !== '' && $nombreEjecutivoSeleccionado === $nombreCompleto) {
         $select = 'selected';
     }
 } elseif ($_SESSION['idem'] == $row['idRelacion']) {
@@ -305,31 +331,62 @@ echo $encabezadoA.$option2.'</select>';
 
  <?php if($conexion->variablespermisos('','auditor','ver')=='si'){ ?>
 
-<tr style="background:#fcf3cf">
-<th style="text-align:left" scope="col">NOMBRE DEL AUDITOR:</th>
-<td>
+               <tr style="background:#fcf3cf">
+    <th style="text-align:left" scope="col">NOMBRE DEL AUDITOR:</th>
+       <td>
 <?php
+$encabezadoA = '';
 $queryper = $conexion->colaborador_generico_bueno();
+$encabezadoA = '<select class="form-select mb-3" aria-label="Default select example" id="NOMBRE_AUDITOR" required="" name="NOMBRE_AUDITOR"  placeholder="SELECIONA UNA OPCIÓN">
+<option> SELECIONA UNA OPCIÓN</option>';
 
-$encabezadoA = '<select class="form-select mb-3" aria-label="Default select example" id="NOMBRE_AUDITOR" required name="NOMBRE_AUDITOR">
-<option value="">SELECCIONA UNA OPCIÓN</option>';
 
 $fondos = array("fff0df","f4ffdf","dfffed","dffeff","dfe8ff","efdfff","ffdffd","efdfff","ffdfe9");
 $num = 0;
-$option99 = ""; // si no lo declaras, PHP te lo marca Notice
-
-while($row = mysqli_fetch_array($queryper)){
-    if($num==8){$num=0;}else{$num++;}
-
-    $option99 .= '<option style="background:#'.$fondos[$num].'" 
-    value="'.$row['aliasid'].'^^^'.$row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO'].'">'
-    .$row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO'].'</option>';
+$nombreAUDITORSeleccionado = '';
+$aliasAUDITORSeleccionado = '';
+if (!empty($NOMBRE_AUDITOR)) {
+    if (strpos($NOMBRE_AUDITOR, '^^^') !== false) {
+        list($aliasAUDITORSeleccionado, $nombreAUDITORSeleccionado) = explode('^^^', $NOMBRE_AUDITOR, 2);
+    } else {
+        $nombreAUDITORSeleccionado = $NOMBRE_AUDITOR;
+    }
+    $nombreAUDITORSeleccionado = trim($nombreAUDITORSeleccionado);
+    $aliasAUDITORSeleccionado = trim($aliasAUDITORSeleccionado);
 }
 
-echo $encabezadoA.$option99.'</select>';
-?>
-</td>
-</tr><?php } ?>
+while($row = mysqli_fetch_array($queryper))
+{
+
+if($num==8){$num=0;}else{$num++;}
+
+$nombreCompleto = trim(
+    $row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO']
+);
+$valorOption = $row['aliasid'].'^^^'.$nombreCompleto;
+
+$select = '';
+if (!empty($NOMBRE_AUDITOR)) {
+    if ($aliasAUDITORSeleccionado !== '' && $aliasAUDITORSeleccionado === $row['aliasid']) {
+        $select = 'selected';
+    } elseif ($nombreAUDITORSeleccionado !== '' && $nombreAUDITORSeleccionado === $nombreCompleto) {
+        $select = 'selected';
+    }
+} elseif ($_SESSION['idem'] == $row['idRelacion']) {
+    $select = 'selected';
+}
+
+$option21 .= '<option style="background: #'.$fondos[$num].'" '.$select.' 
+value="'.$valorOption.'">'.$nombreCompleto.
+'</option>';
+}
+echo $encabezadoA.$option21.'</select>';		
+?></td>
+
+    </tr>
+
+
+<?php } ?>
 
 	
 	
@@ -824,23 +881,26 @@ echo $encabezadoA.$option99.'</select>';
  
 
 
+          <tr style="background:#fcf3cf">     
 
-    <tr style="background:#fcf3cf">  
-    <th scope="row"> <label for="validationCustom03" class="form-label">SUBIR COTIZACIÓN PARA EL CLIENTE:<br><a style="color:red;font-size:11px">OBLIGATORIO</a></label></th> <td>
-    <div id="drop_file_zone" ondrop="upload_file(event,'SUBIR_COTIZACION')" ondragover="return false" ><p>Suelta aquí o busca tu archivo</p>
-	<p><input class="form-control form-control-sm" id="SUBIR_COTIZACION" type="text" onkeydown="return false" onclick="file_explorer('SUBIR_COTIZACION');"  VALUE="<?php echo $SUBIR_COTIZACION; ?>" required /></p>
-    <input type="file" name="SUBIR_COTIZACION" id="nono"/>
-    <div id="1SUBIR_COTIZACION">
-    <?php
-    if($SUBIR_COTIZACION!=""){echo "<a target='_blank' href='includes/archivos/".$SUBIR_COTIZACION."'>Visualizar!</a>"; 
-     }?></div>
-     </div>         
-     <div id="2SUBIR_COTIZACION"><?php $querycontras2 = $altaeventos->Listado_fotoseventostemporal('SUBIR_COTIZACION',date('Y-m-d'),$_SESSION['idem']);
-     while($row2=mysqli_fetch_array($querycontras2)){
-    echo "<a target='_blank' href='includes/archivos/".$row2['SUBIR_COTIZACION']."' id='A".$row2['id']."' >Visualizar!</a> "." <span id='".$row2['id']."' class='view_dataAEborrar' style='cursor:pointer;color:blue;'>Borrar!</span><span > ".$row2['fecha']."</span>".'<br/>';
-     }
-    ?></div>				 
-    </td></tr>
+         <th scope="row"> <label for="validationCustom03" class="form-label">SUBIR COTIZACIÓN PARA EL CLIENTE:</label></th>
+         <td>
+  <div id="drop_file_zone" ondrop="upload_file(event,'SUBIR_COTIZACION')" ondragover="return false" >
+  <p>Suelta aquí o busca tu archivo</p>
+  <p><input class="form-control form-control-sm" id="SUBIR_COTIZACION" type="text" onkeydown="return false" onclick="file_explorer('SUBIR_COTIZACION');"  VALUE="<?php echo $SUBIR_COTIZACION; ?>" required /></p>
+  <input type="file" name="SUBIR_COTIZACION" id="nono"/>
+  <div id="1SUBIR_COTIZACION">
+  <?php
+  if($SUBIR_COTIZACION!=""){echo "<a target='_blank' href='includes/archivos/".$SUBIR_COTIZACION."'>Visualizar!</a>"; 
+  }?></div>
+  </div>         
+         <div id="2SUBIR_COTIZACION"><?php $querycontras2 = $altaeventos->Listado_fotoseventostemporal('SUBIR_COTIZACION',date('Y-m-d'),$_SESSION['idem'],$_SESSION['idevento']);
+
+while($row2=mysqli_fetch_array($querycontras2)){
+echo "<a target='_blank' href='includes/archivos/".$row2['SUBIR_COTIZACION']."' id='A".$row2['id']."' >Visualizar!</a> "." <span id='".$row2['id']."' class='view_dataAEborrar' style='cursor:pointer;color:blue;'>Borrar!</span><span > ".$row2['fecha']."</span>".'<br/>';	
+}
+?></div>				 
+         </td></tr>
 
 
 
