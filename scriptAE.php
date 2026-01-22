@@ -415,11 +415,15 @@ $.ajax({
 	 beforeSend:function(){  
     $('#mensajeALTAEVENTOS').html('cargando'); 
     },    
-   success:function(data){
-	   
+  success:function(data){
+	    
 	$("#resetaltaeventos").load(location.href + " #resetaltaeventos");
 	   
 	$("#mensajeALTAEVENTOS").html("<span id='ACTUALIZADO' >"+data+"</span>");
+
+    if (typeof setFormularioBloqueado === "function") {
+        setFormularioBloqueado(true);
+    }
 	
 	$("#2SUBIR_COTIZACION").load(location.href + " #2SUBIR_COTIZACION");
 	$("#2SUBIR_ORDEN_COMPRA").load(location.href + " #2SUBIR_ORDEN_COMPRA");
