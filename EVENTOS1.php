@@ -229,13 +229,23 @@ while($row = mysqli_fetch_array($queryper))
 
 if($num==8){$num=0;}else{$num++;}
 
-$select='';
-if($_SESSION['idem']==$row['idRelacion']){
-$select='selected';
+$nombreCompleto = trim(
+    $row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO']
+);
+$valorOption = $row['aliasid'].'^^^'.$nombreCompleto;
+
+$select = '';
+if (!empty($NOMBRE_VENDEDOR)) {
+    $prefijoVendedor = $row['aliasid'].'^^^';
+    if ($NOMBRE_VENDEDOR === $valorOption || strpos($NOMBRE_VENDEDOR, $prefijoVendedor) === 0) {
+        $select = 'selected';
+    }
+} elseif ($_SESSION['idem'] == $row['idRelacion']) {
+    $select = 'selected';
 }
 
 $option2 .= '<option style="background: #'.$fondos[$num].'" '.$select.' 
-value="'.$row['aliasid'].'^^^'.$row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO'].'">'.$row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO'].
+value="'.$valorOption.'">'.$nombreCompleto.
 '</option>';
 }
 echo $encabezadoA.$option2.'</select>';		
@@ -244,55 +254,47 @@ echo $encabezadoA.$option2.'</select>';
     </tr>
 	
                   
-<tr style="background:#fcf3cf">
-    <th style="text-align:left" scope="col">
-        NOMBRE DEL RESPONSABLE DEL EVENTO:<br>
-        <a style="color:red;font-size:11px">OBLIGATORIO</a>
-    </th>
-    <td>
+                <tr style="background:#fcf3cf">
+    <th style="text-align:left" scope="col">NOMBRE DEL RESPONSABLE DEL EVENTO:<br><a style="color:red;font-size:11px">OBLIGATORIO</a></th>
+       <td>
 <?php
+$encabezadoA = '';
 $queryper = $conexion->colaborador_generico_bueno();
+$encabezadoA = '<select class="form-select mb-3" aria-label="Default select example" id="NOMBRE_EJECUTIVOEVENTO" required="" name="NOMBRE_EJECUTIVOEVENTO"  placeholder="SELECIONA UNA OPCIÓN">
+<option> SELECIONA UNA OPCIÓN</option>';
 
-$encabezadoA = '
-<select class="form-select mb-3"
-        id="NOMBRE_EJECUTIVOEVENTO"
-        name="NOMBRE_EJECUTIVOEVENTO"
-        required>
-    <option value="" disabled>SELECCIONA UNA OPCIÓN</option>';
 
-$fondos = ["fff0df","f4ffdf","dfffed","dffeff","dfe8ff","efdfff","ffdffd","efdfff","ffdfe9"];
+$fondos = array("fff0df","f4ffdf","dfffed","dffeff","dfe8ff","efdfff","ffdffd","efdfff","ffdfe9");
 $num = 0;
-$option99 = '';
 
-while ($row = mysqli_fetch_array($queryper)) {
+while($row = mysqli_fetch_array($queryper))
+{
 
-    if ($num == 8) { $num = 0; } else { $num++; }
+if($num==8){$num=0;}else{$num++;}
 
-    $select = '';
-    if (!empty($NOMBRE_EJECUTIVOEVENTO) && $NOMBRE_EJECUTIVOEVENTO == $row['aliasid']) {
+$nombreCompleto = trim(
+    $row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.$row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO']
+);
+$valorOption = $row['aliasid'].'^^^'.$nombreCompleto;
+
+$select = '';
+if (!empty($NOMBRE_EJECUTIVOEVENTO)) {
+    $prefijoVendedor = $row['aliasid'].'^^^';
+    if ($NOMBRE_EJECUTIVOEVENTO === $valorOption || strpos($NOMBRE_EJECUTIVOEVENTO, $prefijoVendedor) === 0) {
         $select = 'selected';
     }
-
-    $nombreCompleto = trim(
-        $row['NOMBRE_1'].' '.$row['NOMBRE_2'].' '.
-        $row['APELLIDO_PATERNO'].' '.$row['APELLIDO_MATERNO']
-    );
-
-    $option99 .= '
-    <option style="background:#'.$fondos[$num].'"
-            '.$select.'
-            value="'.$row['aliasid'].'^^^'.$nombreCompleto.'">
-        '.$nombreCompleto.'
-    </option>';
+} elseif ($_SESSION['idem'] == $row['idRelacion']) {
+    $select = 'selected';
 }
 
-echo $encabezadoA . $option99 . '</select>';
+$option2 .= '<option style="background: #'.$fondos[$num].'" '.$select.' 
+value="'.$valorOption.'">'.$nombreCompleto.
+'</option>';
+}
+echo $encabezadoA.$option2.'</select>';		
+?></td>
 
-?>
-    </td>
-</tr>
-
-
+    </tr>
 
  <tr  style="background: #efdcf0"> 
 
