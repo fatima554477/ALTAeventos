@@ -1024,7 +1024,7 @@ echo "<a target='_blank' href='includes/archivos/".$row2['IMAGEN_EVENTO']."' id=
                                     
      <input type="hidden" value="hALTAEVENTOS" name="hALTAEVENTOS">     
     <input type="hidden" value="<?php echo $IPaltaeventos; ?>" name="IPaltaeventos" id="IPaltaeventos">     
- 
+    <?php if($conexion->variablespermisos('','EVENTOSmodi','ver')=='si'){ ?>
    <td>
            
 
@@ -1051,7 +1051,6 @@ echo "<a target='_blank' href='includes/archivos/".$row2['IMAGEN_EVENTO']."' id=
 
 
  id="mensajeALTAEVENTOS"/></td>
-    <?php if($conexion->variablespermisos('','ALTA_EVENTOSF','guardar')=='si'){ ?>
  <td>
            
 
